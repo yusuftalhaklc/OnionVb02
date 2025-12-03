@@ -1,4 +1,4 @@
-namespace OnionVb02.WebApi.RequestModels.OrderDetails
+namespace OnionVb02.Application.RequestModels.OrderDetails
 {
     public class CreateOrderDetailRequestModel
     {

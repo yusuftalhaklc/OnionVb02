@@ -1,4 +1,4 @@
-namespace OnionVb02.WebApi.RequestModels.Orders
+namespace OnionVb02.Application.RequestModels.Orders
 {
     public class CreateOrderRequestModel
     {

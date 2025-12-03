@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using OnionVb02.Application.DTOClasses;
-using OnionVb02.WebApi.RequestModels.Categories;
-using OnionVb02.WebApi.RequestModels.Products;
-using OnionVb02.WebApi.RequestModels.AppUsers;
-using OnionVb02.WebApi.RequestModels.AppUserProfiles;
-using OnionVb02.WebApi.RequestModels.Orders;
-using OnionVb02.WebApi.RequestModels.OrderDetails;
+using OnionVb02.Application.RequestModels.Categories;
+using OnionVb02.Application.RequestModels.Products;
+using OnionVb02.Application.RequestModels.AppUsers;
+using OnionVb02.Application.RequestModels.AppUserProfiles;
+using OnionVb02.Application.RequestModels.Orders;
+using OnionVb02.Application.RequestModels.OrderDetails;
 using OnionVb02.WebApi.ResponseModels.Categories;
 using OnionVb02.WebApi.ResponseModels.Products;
 using OnionVb02.WebApi.ResponseModels.AppUsers;

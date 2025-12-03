@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnionVb02.Application.DTOClasses;
 using OnionVb02.Application.ManagerInterfaces;
-using OnionVb02.WebApi.RequestModels.Categories;
+using OnionVb02.Application.RequestModels.Categories;
 using OnionVb02.WebApi.ResponseModels.Categories;
 
 namespace OnionVb02.WebApi.Controllers

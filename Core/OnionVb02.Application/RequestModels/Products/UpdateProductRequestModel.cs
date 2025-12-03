@@ -1,4 +1,4 @@
-namespace OnionVb02.WebApi.RequestModels.Products
+namespace OnionVb02.Application.RequestModels.Products
 {
     public class UpdateProductRequestModel
     {

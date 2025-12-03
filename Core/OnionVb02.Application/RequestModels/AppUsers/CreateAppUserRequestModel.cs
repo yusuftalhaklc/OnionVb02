@@ -1,4 +1,4 @@
-namespace OnionVb02.WebApi.RequestModels.AppUsers
+namespace OnionVb02.Application.RequestModels.AppUsers
 {
     public class CreateAppUserRequestModel
     {

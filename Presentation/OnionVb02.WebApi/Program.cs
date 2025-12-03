@@ -2,6 +2,7 @@ using OnionVb02.Application.DependencyResolvers;
 using OnionVb02.InnerInfrastructure.DependencyResolvers;
 using OnionVb02.Persistence.DependencyResolvers;
 using OnionVb02.WebApi.DependencyResolvers;
+using ValidatorStructor.DependencyResolvers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddDtoMapperService();
 builder.Services.AddManagerService();
 builder.Services.AddRepositoryService();
 builder.Services.AddVmMapperService();
+builder.Services.AddValidatorService();
 
 var app = builder.Build();
 

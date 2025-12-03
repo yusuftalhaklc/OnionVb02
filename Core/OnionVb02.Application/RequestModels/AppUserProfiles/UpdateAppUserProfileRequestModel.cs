@@ -1,4 +1,4 @@
-namespace OnionVb02.WebApi.RequestModels.AppUserProfiles
+namespace OnionVb02.Application.RequestModels.AppUserProfiles
 {
     public class UpdateAppUserProfileRequestModel
     {

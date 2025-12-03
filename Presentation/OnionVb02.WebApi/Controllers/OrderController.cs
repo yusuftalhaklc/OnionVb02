@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnionVb02.Application.DTOClasses;
 using OnionVb02.Application.ManagerInterfaces;
-using OnionVb02.WebApi.RequestModels.Orders;
+using OnionVb02.Application.RequestModels.Orders;
 using OnionVb02.WebApi.ResponseModels.Orders;
 
 namespace OnionVb02.WebApi.Controllers
