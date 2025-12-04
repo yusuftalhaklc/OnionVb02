@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContextService();
 builder.Services.AddDtoMapperService();
+builder.Services.AddHandlerService();
 builder.Services.AddManagerService();
 builder.Services.AddRepositoryService();
 builder.Services.AddVmMapperService();
