@@ -10,16 +10,16 @@ namespace OnionVb02.Application.CqrsAndMediatr.CQRS.Handlers.Modify
 {
     public class CreateCategoryCommandHandler
     {
-        private readonly ICategoryRepository repository;
+        private readonly ICategoryRepository _repository;
 
         public CreateCategoryCommandHandler(ICategoryRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
 
         public async Task Handle(CreateCategoryCommand command)
         {
-            await repository.CreateAsync
+            await _repository.CreateAsync
                 (
                     new Domain.Entities.Category
                     {

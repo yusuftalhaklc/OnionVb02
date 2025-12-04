@@ -16,11 +16,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContextService();
 builder.Services.AddDtoMapperService();
-builder.Services.AddHandlerService();
 builder.Services.AddManagerService();
 builder.Services.AddRepositoryService();
 builder.Services.AddVmMapperService();
 builder.Services.AddValidatorService();
+builder.Services.AddHandlerService();
+builder.Services.AddMediatRService();
+
 
 var app = builder.Build();
 

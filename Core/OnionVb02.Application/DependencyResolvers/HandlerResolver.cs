@@ -5,6 +5,7 @@ using OnionVb02.Application.CqrsAndMediatr.CQRS.Handlers.Read;
 
 namespace OnionVb02.Application.DependencyResolvers
 {
+    // todo: diğer entityler için cqrs
     public static class HandlerResolver
     {
         public static void AddHandlerService(this IServiceCollection services)
