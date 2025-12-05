@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using OnionVb02.Application.CqrsAndMediatr.CQRS.Handlers.Read;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.CategoryHandlers.Read;
 
 namespace OnionVb02.Application.DependencyResolvers
 {
