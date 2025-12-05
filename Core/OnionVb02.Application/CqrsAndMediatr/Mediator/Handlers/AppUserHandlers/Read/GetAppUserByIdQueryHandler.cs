@@ -1,10 +1,10 @@
-﻿using MediatR;
+using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.AppUserQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.AppUserResults;
 using OnionVb02.Contract.RepositoryInterfaces;
 using OnionVb02.Domain.Entities;
 
-namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.Read
+namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers.Read
 {
     public class GetAppUserByIdQueryHandler : IRequestHandler<GetAppUserByIdQuery, GetAppUserByIdQueryResult>
     {
@@ -17,9 +17,18 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.Read
 
         public async Task<GetAppUserByIdQueryResult> Handle(GetAppUserByIdQuery request, CancellationToken cancellationToken)
         {
-            AppUser value = await _repository.GetByIdAsync(request.Id);
-            return new GetAppUserByIdQueryResult() { Id = value.Id, Password = value.Password, Username = value.UserName};
+            AppUser user = await _repository.GetByIdAsync(request.Id);
+
+            if (user == null)
+                throw new Exception("User not found");
+
+            return new GetAppUserByIdQueryResult
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Password = user.Password
+            };
         }
     }
-
 }
+

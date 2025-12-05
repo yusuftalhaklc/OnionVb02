@@ -1,8 +1,8 @@
-﻿using MediatR;
+using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.AppUserCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
 
-namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.Modify
+namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers.Modify
 {
     public class UpdateAppUserCommandHandler : IRequestHandler<UpdateAppUserCommand>
     {
@@ -28,6 +28,5 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.Modify
             await _repository.SaveChangesAsync();
         }
     }
-
-
 }
+

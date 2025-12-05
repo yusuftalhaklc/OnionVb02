@@ -1,15 +1,10 @@
-﻿using MediatR;
+using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.AppUserQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.AppUserResults;
 using OnionVb02.Contract.RepositoryInterfaces;
 using OnionVb02.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.Read
+namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers.Read
 {
     public class GetAppUserQueryHandler : IRequestHandler<GetAppUserQuery, List<GetAppUserQueryResult>>
     {
@@ -31,6 +26,5 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.Read
                 }).ToList();
         }
     }
-
-
 }
+
