@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.AppUserQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.AppUserResults;
@@ -9,21 +10,18 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers
     public class GetAppUserQueryHandler : IRequestHandler<GetAppUserQuery, List<GetAppUserQueryResult>>
     {
         private readonly IAppUserRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetAppUserQueryHandler(IAppUserRepository repository)
+        public GetAppUserQueryHandler(IAppUserRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<List<GetAppUserQueryResult>> Handle(GetAppUserQuery request, CancellationToken cancellationToken)
         {
             List<AppUser> values = await _repository.GetAllAsync();
-            return values.Select(
-                x => new GetAppUserQueryResult 
-                { 
-                    Username = x.UserName, 
-                    Password = x.Password 
-                }).ToList();
+            return _mapper.Map<List<GetAppUserQueryResult>>(values);
         }
     }
 }

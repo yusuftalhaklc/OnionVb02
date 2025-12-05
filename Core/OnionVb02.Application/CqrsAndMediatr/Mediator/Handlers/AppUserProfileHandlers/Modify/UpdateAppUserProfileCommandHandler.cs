@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.AppUserProfileCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,10 +9,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserProfileH
     public class UpdateAppUserProfileCommandHandler : IRequestHandler<UpdateAppUserProfileCommand>
     {
         private readonly IAppUserProfileRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UpdateAppUserProfileCommandHandler(IAppUserProfileRepository repository)
+        public UpdateAppUserProfileCommandHandler(IAppUserProfileRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(UpdateAppUserProfileCommand request, CancellationToken cancellationToken)
@@ -21,9 +24,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserProfileH
             if (profile == null)
                 throw new Exception("AppUserProfile not found");
 
-            profile.FirstName = request.FirstName;
-            profile.LastName = request.LastName;
-            profile.AppUserId = request.AppUserId;
+            _mapper.Map(request, profile);
             profile.Status = Domain.Enums.DataStatus.Updated;
             profile.UpdatedDate = DateTime.Now;
 

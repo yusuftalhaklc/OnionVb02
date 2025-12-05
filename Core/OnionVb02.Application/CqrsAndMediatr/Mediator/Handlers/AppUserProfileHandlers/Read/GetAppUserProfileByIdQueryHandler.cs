@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.AppUserProfileQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.AppUserProfileResults;
@@ -9,10 +10,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserProfileH
     public class GetAppUserProfileByIdQueryHandler : IRequestHandler<GetAppUserProfileByIdQuery, GetAppUserProfileByIdQueryResult>
     {
         private readonly IAppUserProfileRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetAppUserProfileByIdQueryHandler(IAppUserProfileRepository repository)
+        public GetAppUserProfileByIdQueryHandler(IAppUserProfileRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<GetAppUserProfileByIdQueryResult> Handle(GetAppUserProfileByIdQuery request, CancellationToken cancellationToken)
@@ -22,13 +25,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserProfileH
             if (profile == null)
                 throw new Exception("AppUserProfile not found");
 
-            return new GetAppUserProfileByIdQueryResult
-            {
-                Id = profile.Id,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                AppUserId = profile.AppUserId
-            };
+            return _mapper.Map<GetAppUserProfileByIdQueryResult>(profile);
         }
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.CategoryCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,10 +9,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.CategoryHandler
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand>
     {
         private readonly ICategoryRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UpdateCategoryCommandHandler(ICategoryRepository repository)
+        public UpdateCategoryCommandHandler(ICategoryRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
@@ -21,8 +24,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.CategoryHandler
             if (category == null)
                 throw new Exception("Category not found");
 
-            category.CategoryName = request.CategoryName;
-            category.Description = request.Description;
+            _mapper.Map(request, category);
             category.Status = Domain.Enums.DataStatus.Updated;
             category.UpdatedDate = DateTime.Now;
 

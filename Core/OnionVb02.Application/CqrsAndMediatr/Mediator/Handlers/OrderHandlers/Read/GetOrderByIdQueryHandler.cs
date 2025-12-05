@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.OrderQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.OrderResults;
@@ -9,10 +10,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderHandlers.R
     public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, GetOrderByIdQueryResult>
     {
         private readonly IOrderRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetOrderByIdQueryHandler(IOrderRepository repository)
+        public GetOrderByIdQueryHandler(IOrderRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<GetOrderByIdQueryResult> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
@@ -22,12 +25,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderHandlers.R
             if (order == null)
                 throw new Exception("Order not found");
 
-            return new GetOrderByIdQueryResult
-            {
-                Id = order.Id,
-                ShippingAddress = order.ShippingAddress,
-                AppUserId = order.AppUserId
-            };
+            return _mapper.Map<GetOrderByIdQueryResult>(order);
         }
     }
 }

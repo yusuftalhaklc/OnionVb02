@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.ProductQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.ProductResults;
@@ -9,10 +10,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.ProductHandlers
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, GetProductByIdQueryResult>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetProductByIdQueryHandler(IProductRepository repository)
+        public GetProductByIdQueryHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<GetProductByIdQueryResult> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
@@ -22,13 +25,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.ProductHandlers
             if (product == null)
                 throw new Exception("Product not found");
 
-            return new GetProductByIdQueryResult
-            {
-                Id = product.Id,
-                ProductName = product.ProductName,
-                UnitPrice = product.UnitPrice,
-                CategoryId = product.CategoryId
-            };
+            return _mapper.Map<GetProductByIdQueryResult>(product);
         }
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.CategoryCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,21 +9,19 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.CategoryHandler
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand>
     {
         private readonly ICategoryRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CreateCategoryCommandHandler(ICategoryRepository repository)
+        public CreateCategoryCommandHandler(ICategoryRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = new Category
-            {
-                CategoryName = request.CategoryName,
-                Description = request.Description,
-                Status = Domain.Enums.DataStatus.Inserted,
-                CreatedDate = DateTime.Now
-            };
+            var category = _mapper.Map<Category>(request);
+            category.Status = Domain.Enums.DataStatus.Inserted;
+            category.CreatedDate = DateTime.Now;
 
             await _repository.CreateAsync(category);
         }

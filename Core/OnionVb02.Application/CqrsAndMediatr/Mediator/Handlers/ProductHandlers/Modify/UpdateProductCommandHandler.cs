@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.ProductCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,10 +9,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.ProductHandlers
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UpdateProductCommandHandler(IProductRepository repository)
+        public UpdateProductCommandHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -21,9 +24,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.ProductHandlers
             if (product == null)
                 throw new Exception("Product not found");
 
-            product.ProductName = request.ProductName;
-            product.UnitPrice = request.UnitPrice;
-            product.CategoryId = request.CategoryId;
+            _mapper.Map(request, product);
             product.Status = Domain.Enums.DataStatus.Updated;
             product.UpdatedDate = DateTime.Now;
 

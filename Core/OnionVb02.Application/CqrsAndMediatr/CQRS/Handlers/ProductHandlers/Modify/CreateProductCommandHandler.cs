@@ -1,35 +1,28 @@
+using AutoMapper;
 using OnionVb02.Application.CqrsAndMediatr.CQRS.Commands.ProductCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnionVb02.Domain.Entities;
 
 namespace OnionVb02.Application.CqrsAndMediatr.CQRS.Handlers.ProductHandlers.Modify
 {
     public class CreateProductCommandHandler
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CreateProductCommandHandler(IProductRepository repository)
+        public CreateProductCommandHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(CreateProductCommand command)
         {
-            await _repository.CreateAsync
-                (
-                    new Domain.Entities.Product
-                    {
-                        ProductName = command.ProductName,
-                        UnitPrice = command.UnitPrice,
-                        CategoryId = command.CategoryId,
-                        Status = Domain.Enums.DataStatus.Inserted,
-                        CreatedDate = DateTime.Now
-                    }
-                );
+            var product = _mapper.Map<Product>(command);
+            product.Status = Domain.Enums.DataStatus.Inserted;
+            product.CreatedDate = DateTime.Now;
+            
+            await _repository.CreateAsync(product);
         }
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.CategoryQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.CategoryResults;
@@ -9,10 +10,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.CategoryHandler
     public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, GetCategoryByIdQueryResult>
     {
         private readonly ICategoryRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetCategoryByIdQueryHandler(ICategoryRepository repository)
+        public GetCategoryByIdQueryHandler(ICategoryRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<GetCategoryByIdQueryResult> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
@@ -22,12 +25,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.CategoryHandler
             if (category == null)
                 throw new Exception("Category not found");
 
-            return new GetCategoryByIdQueryResult
-            {
-                Id = category.Id,
-                CategoryName = category.CategoryName,
-                Description = category.Description
-            };
+            return _mapper.Map<GetCategoryByIdQueryResult>(category);
         }
     }
 }

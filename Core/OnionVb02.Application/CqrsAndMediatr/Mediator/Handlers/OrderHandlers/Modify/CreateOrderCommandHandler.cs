@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.OrderCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,21 +9,19 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderHandlers.M
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
     {
         private readonly IOrderRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CreateOrderCommandHandler(IOrderRepository repository)
+        public CreateOrderCommandHandler(IOrderRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = new Order
-            {
-                ShippingAddress = request.ShippingAddress,
-                AppUserId = request.AppUserId,
-                Status = Domain.Enums.DataStatus.Inserted,
-                CreatedDate = DateTime.Now
-            };
+            var order = _mapper.Map<Order>(request);
+            order.Status = Domain.Enums.DataStatus.Inserted;
+            order.CreatedDate = DateTime.Now;
 
             await _repository.CreateAsync(order);
         }

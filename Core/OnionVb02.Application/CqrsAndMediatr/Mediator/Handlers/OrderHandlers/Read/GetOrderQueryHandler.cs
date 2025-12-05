@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.OrderQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.OrderResults;
@@ -9,22 +10,18 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderHandlers.R
     public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, List<GetOrderQueryResult>>
     {
         private readonly IOrderRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetOrderQueryHandler(IOrderRepository repository)
+        public GetOrderQueryHandler(IOrderRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<List<GetOrderQueryResult>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
         {
             List<Order> values = await _repository.GetAllAsync();
-            return values.Select(
-                x => new GetOrderQueryResult 
-                { 
-                    Id = x.Id,
-                    ShippingAddress = x.ShippingAddress, 
-                    AppUserId = x.AppUserId
-                }).ToList();
+            return _mapper.Map<List<GetOrderQueryResult>>(values);
         }
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.ProductQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.ProductResults;
@@ -9,23 +10,18 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.ProductHandlers
     public class GetProductQueryHandler : IRequestHandler<GetProductQuery, List<GetProductQueryResult>>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetProductQueryHandler(IProductRepository repository)
+        public GetProductQueryHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<List<GetProductQueryResult>> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
             List<Product> values = await _repository.GetAllAsync();
-            return values.Select(
-                x => new GetProductQueryResult 
-                { 
-                    Id = x.Id,
-                    ProductName = x.ProductName, 
-                    UnitPrice = x.UnitPrice,
-                    CategoryId = x.CategoryId
-                }).ToList();
+            return _mapper.Map<List<GetProductQueryResult>>(values);
         }
     }
 }

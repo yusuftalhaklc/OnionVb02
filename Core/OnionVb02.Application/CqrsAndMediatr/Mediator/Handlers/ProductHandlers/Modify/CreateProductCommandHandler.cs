@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.ProductCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,22 +9,19 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.ProductHandlers
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand>
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CreateProductCommandHandler(IProductRepository repository)
+        public CreateProductCommandHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new Product
-            {
-                ProductName = request.ProductName,
-                UnitPrice = request.UnitPrice,
-                CategoryId = request.CategoryId,
-                Status = Domain.Enums.DataStatus.Inserted,
-                CreatedDate = DateTime.Now
-            };
+            var product = _mapper.Map<Product>(request);
+            product.Status = Domain.Enums.DataStatus.Inserted;
+            product.CreatedDate = DateTime.Now;
 
             await _repository.CreateAsync(product);
         }

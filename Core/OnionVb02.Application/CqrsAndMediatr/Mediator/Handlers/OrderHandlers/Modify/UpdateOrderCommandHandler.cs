@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.OrderCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
@@ -8,10 +9,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderHandlers.M
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
     {
         private readonly IOrderRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UpdateOrderCommandHandler(IOrderRepository repository)
+        public UpdateOrderCommandHandler(IOrderRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
@@ -21,8 +24,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderHandlers.M
             if (order == null)
                 throw new Exception("Order not found");
 
-            order.ShippingAddress = request.ShippingAddress;
-            order.AppUserId = request.AppUserId;
+            _mapper.Map(request, order);
             order.Status = Domain.Enums.DataStatus.Updated;
             order.UpdatedDate = DateTime.Now;
 

@@ -1,34 +1,26 @@
+using AutoMapper;
 using OnionVb02.Application.CqrsAndMediatr.CQRS.Queries.AppUserQueries;
 using OnionVb02.Application.CqrsAndMediatr.CQRS.Results.AppUserResults;
 using OnionVb02.Contract.RepositoryInterfaces;
 using OnionVb02.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnionVb02.Application.CqrsAndMediatr.CQRS.Handlers.AppUserHandlers.Read
 {
     public class GetAppUserByIdQueryHandler
     {
         private readonly IAppUserRepository _appUserRepository;
+        private readonly IMapper _mapper;
 
-        public GetAppUserByIdQueryHandler(IAppUserRepository appUserRepository)
+        public GetAppUserByIdQueryHandler(IAppUserRepository appUserRepository, IMapper mapper)
         {
             _appUserRepository = appUserRepository;
+            _mapper = mapper;
         }
 
         public async Task<GetAppUserByIdQueryResult> Handle(GetAppUserByIdQuery query)
         {
             AppUser appUser = await _appUserRepository.GetByIdAsync(query.Id);
-
-            return new GetAppUserByIdQueryResult
-            {
-                Id = appUser.Id,
-                UserName = appUser.UserName,
-                Password = appUser.Password
-            };
+            return _mapper.Map<GetAppUserByIdQueryResult>(appUser);
         }
     }
 }

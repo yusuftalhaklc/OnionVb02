@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.OrderDetailQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.OrderDetailResults;
@@ -9,10 +10,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderDetailHand
     public class GetOrderDetailByIdQueryHandler : IRequestHandler<GetOrderDetailByIdQuery, GetOrderDetailByIdQueryResult>
     {
         private readonly IOrderDetailRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetOrderDetailByIdQueryHandler(IOrderDetailRepository repository)
+        public GetOrderDetailByIdQueryHandler(IOrderDetailRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<GetOrderDetailByIdQueryResult> Handle(GetOrderDetailByIdQuery request, CancellationToken cancellationToken)
@@ -22,12 +25,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.OrderDetailHand
             if (orderDetail == null)
                 throw new Exception("OrderDetail not found");
 
-            return new GetOrderDetailByIdQueryResult
-            {
-                Id = orderDetail.Id,
-                OrderId = orderDetail.OrderId,
-                ProductId = orderDetail.ProductId
-            };
+            return _mapper.Map<GetOrderDetailByIdQueryResult>(orderDetail);
         }
     }
 }

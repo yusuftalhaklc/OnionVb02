@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Queries.AppUserQueries;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Results.AppUserResults;
@@ -9,10 +10,12 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers
     public class GetAppUserByIdQueryHandler : IRequestHandler<GetAppUserByIdQuery, GetAppUserByIdQueryResult>
     {
         private readonly IAppUserRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetAppUserByIdQueryHandler(IAppUserRepository repository)
+        public GetAppUserByIdQueryHandler(IAppUserRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<GetAppUserByIdQueryResult> Handle(GetAppUserByIdQuery request, CancellationToken cancellationToken)
@@ -22,12 +25,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers
             if (user == null)
                 throw new Exception("User not found");
 
-            return new GetAppUserByIdQueryResult
-            {
-                Id = user.Id,
-                Username = user.UserName,
-                Password = user.Password
-            };
+            return _mapper.Map<GetAppUserByIdQueryResult>(user);
         }
     }
 }

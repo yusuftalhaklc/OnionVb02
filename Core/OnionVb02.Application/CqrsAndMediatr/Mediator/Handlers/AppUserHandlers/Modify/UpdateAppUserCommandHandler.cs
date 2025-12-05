@@ -1,16 +1,20 @@
+using AutoMapper;
 using MediatR;
 using OnionVb02.Application.CqrsAndMediatr.Mediator.Commands.AppUserCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
+using OnionVb02.Domain.Entities;
 
 namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers.Modify
 {
     public class UpdateAppUserCommandHandler : IRequestHandler<UpdateAppUserCommand>
     {
         private readonly IAppUserRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UpdateAppUserCommandHandler(IAppUserRepository repository)
+        public UpdateAppUserCommandHandler(IAppUserRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(UpdateAppUserCommand request, CancellationToken cancellationToken)
@@ -20,8 +24,7 @@ namespace OnionVb02.Application.CqrsAndMediatr.Mediator.Handlers.AppUserHandlers
             if (user == null)
                 throw new Exception("User not found");
 
-            user.UserName = request.Username;
-            user.Password = request.Password;
+            _mapper.Map(request, user);
             user.Status = Domain.Enums.DataStatus.Updated;
             user.UpdatedDate = DateTime.Now;
 

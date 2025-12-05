@@ -1,34 +1,28 @@
+using AutoMapper;
 using OnionVb02.Application.CqrsAndMediatr.CQRS.Commands.OrderCommands;
 using OnionVb02.Contract.RepositoryInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnionVb02.Domain.Entities;
 
 namespace OnionVb02.Application.CqrsAndMediatr.CQRS.Handlers.OrderHandlers.Modify
 {
     public class CreateOrderCommandHandler
     {
         private readonly IOrderRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CreateOrderCommandHandler(IOrderRepository repository)
+        public CreateOrderCommandHandler(IOrderRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task Handle(CreateOrderCommand command)
         {
-            await _repository.CreateAsync
-                (
-                    new Domain.Entities.Order
-                    {
-                        ShippingAddress = command.ShippingAddress,
-                        AppUserId = command.AppUserId,
-                        Status = Domain.Enums.DataStatus.Inserted,
-                        CreatedDate = DateTime.Now
-                    }
-                );
+            var order = _mapper.Map<Order>(command);
+            order.Status = Domain.Enums.DataStatus.Inserted;
+            order.CreatedDate = DateTime.Now;
+            
+            await _repository.CreateAsync(order);
         }
     }
 }
